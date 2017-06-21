@@ -2,6 +2,12 @@
 <div class="ui grid">
   <div class="three wide column">
     <skos-concept-scheme-form @added="getSchemes()"></skos-concept-scheme-form>
+    <div class="ui fluid vertical menu">
+      <div class="item" :class="{active: !current_scheme}"
+        @click="setActiveScheme('')">
+        All Concepts
+      </div>
+    </div>
     <h4 class="ui header"><div class="ui sub header">Concept Schemes</div></h4>
     <div class="ui fluid vertical menu" v-if="schemes.length > 0">
       <skos-concept-scheme
@@ -14,7 +20,8 @@
   <div class="six wide column">
     <skos-concept-form @added="getConcepts()" :default-scheme="current_scheme"></skos-concept-form>
     <h2 class="ui divided header">
-      <div class="ui sub header">Concepts in Scheme
+      <div class="ui sub header" v-if="current_scheme">
+        Concepts in Scheme
         <div class="ui label">{{current_scheme | curie}}</div>
       </div>
     </h2>
@@ -39,19 +46,11 @@ export default {
   watch: {
     current_scheme() {
       this.getConcepts();
-    },
-    schemes() {
-      if (this.schemes.length > 0) {
-        console.log(this.schemes[0].subject);
-        // set default scheme to the first one found
-        this.$store.dispatch('setActiveScheme', {
-          scheme: this.curie(this.schemes[0].subject)
-        });
-      }
     }
   },
   created() {
     this.getSchemes();
+    this.getConcepts();
   },
   computed: {
     current_scheme() {
@@ -62,6 +61,11 @@ export default {
     }
   },
   methods: {
+    setActiveScheme(scheme) {
+      this.$store.dispatch('setActiveScheme', {
+        scheme: scheme
+      });
+    },
     getSchemes() {
       this.getInto('schemes', {
         predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -69,10 +73,18 @@ export default {
       });
     },
     getConcepts() {
-      this.getInto('concepts', {
-        predicate: 'http://www.w3.org/2004/02/skos/core#inScheme',
-        object: this.current_scheme
-      });
+      if (this.current_scheme) {
+        this.getInto('concepts', {
+          predicate: 'http://www.w3.org/2004/02/skos/core#inScheme',
+          object: this.current_scheme
+        });
+      } else {
+        // get all concepts regardless of stated membership in a scheme
+        this.getInto('concepts', {
+          predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+          object: 'http://www.w3.org/2004/02/skos/core#Concept'
+        });
+      }
     }
   }
 }

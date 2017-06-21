@@ -1,7 +1,7 @@
 <template>
 <div :resource="compacted['@id']" :typeof="rdfa_typeof" :id="dom_id"
   class="item" :class="{active: isActive}"
-  @click="selected">
+  @click="setActiveScheme(compacted['@id'])">
   <div class="header">
     {{compacted['skos:prefLabel'] | @value}}
   </div>
@@ -54,9 +54,9 @@ export default {
     }
   },
   methods: {
-    selected() {
+    setActiveScheme(scheme) {
       this.$store.dispatch('setActiveScheme', {
-        scheme: this.compacted['@id']
+        scheme: scheme
       });
     }
   },

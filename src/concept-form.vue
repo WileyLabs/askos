@@ -66,11 +66,6 @@ export default {
       schemes: {}
     }
   },
-  watch: {
-    defaultScheme(v) {
-      if (v) this.doc.inScheme.push(v);
-    }
-  },
   created() {
     let self = this;
     // add passed in default scheme to inSchemes array

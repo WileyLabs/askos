@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>askos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.2/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.2/addon/lint/lint.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.22.2/addon/hint/show-hint.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.css" />
+  <link rel="edit-form" href="https://github.com/WileyLabs/levelgraph-playground/edit/master/index.html" />
+  <style>
+  [v-cloak] {display: none}
+  .tabular.menu .item {cursor: pointer}
+  #app {margin: 1%}
+  .ui.hover-hidden {display: none}
+  tr:hover .ui.hover-hidden {display: inherit}
+  tr td .ui.input {display: none}
+  .compact.table tbody td:last-child {padding: 0}
+  .ui.bottom.attached.segment {padding:0}
+  </style>
+</head>
+<body>
+  <p></p>
+  <div id="app">
+    <a class="ui right floated icon button" href="https://github.com/WileyLabs/askos" target="_blank">
+      <i class="github alternate icon"></i>
+      Fork / Contribute
+    </a>
+
+    <h1 class="ui dividing page header">
+      Askos
+      <div class="ui sub header">
+        A SKOS browser and editor.
+      </div>
+    </h1>
+
+    <skos-viewer ref="skos" language="en"></skos-viewer>
+
+
+    <div class="ui top attached tabular menu">
+      <div class="item active" @click="displayTriples()">Triples</div>
+    </div>
+    <div class="ui bottom attached segment">
+      <table class="ui table">
+        <tr v-for="triple in table">
+          <td>{{triple.subject}}</td>
+          <td>{{triple.predicate}}</td>
+          <td>{{triple.object}}</td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="dist/index.js"></script>
+</body>
+</html>

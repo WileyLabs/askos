@@ -1,0 +1,5 @@
+node_modules/
+dist/
+
+# localhost friendly security certs
+*.pem

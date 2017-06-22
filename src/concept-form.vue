@@ -8,22 +8,21 @@
     </button>
     <form class="ui form" v-else>
       <div class="ui field">
-        <label>id</label>
+        <label>ID (an IRI)</label>
         <div class="ui labeled input">
-          <div class="ui label">{{defaultScheme}}</div>
           <input type="url" v-model="doc.id" />
         </div>
       </div>
       <div class="ui field">
-        <label>skos:prefLabel</label>
+        <label>Prefered Label</label>
         <input type="text" v-model="doc.prefLabel" />
       </div>
       <div class="ui field">
-        <label>skos:definition</label>
+        <label>Definition</label>
         <input type="text" v-model="doc.definition" />
       </div>
       <div class="ui field">
-        <label>skos:inScheme</label>
+        <label>In Scheme(s)</label>
         <vue-semantic-multi-select placeholder="Schemes" :options="schemes" v-model="doc.inScheme"></vue-semantic-multi-select>
       </div>
       <div class="ui field">
@@ -67,11 +66,6 @@ export default {
       schemes: {}
     }
   },
-  watch: {
-    defaultScheme(v) {
-      if (v) this.doc.inScheme.push(v);
-    }
-  },
   created() {
     let self = this;
     // add passed in default scheme to inSchemes array
@@ -96,7 +90,7 @@ export default {
       let json = {
         "@context": context,
         "@type": "Concept",
-        "id": this.defaultScheme + this.doc.id,
+        "id": this.doc.id,
         "prefLabel": this.doc.prefLabel,
         "definition": this.doc.definition,
         "inScheme": [...(new Set(this.doc.inScheme))] // ready. set. splat!

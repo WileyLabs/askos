@@ -56,6 +56,9 @@ export default {
       self.$db.jsonld.put(json, (err) => {
         if (err) console.error(err);
         self.$emit('added');
+        self.doc.id = '';
+        self.doc.prefLabel = '';
+        self.ui.showing = false;
       });
     }
   }

@@ -20,18 +20,26 @@
   </div>
   <div class="six wide column">
     <skos-concept-form @added="getConcepts()" :default-scheme="current_scheme"></skos-concept-form>
+    <button class="ui right floated red basic icon button"
+      v-if="current_scheme" @click="deleteScheme(current_scheme)">
+      <i class="delete icon"></i>
+      Delete Scheme
+    </button>
     <h2 class="ui divided header">
       <div class="ui sub header" v-if="current_scheme">
         Concepts in Scheme
-        <div class="ui label">{{current_scheme | curie}}</div>
       </div>
     </h2>
+    <div class="ui horizontal divider header">
+      {{current_scheme | curie}}
+    </div>
     <div class="ui divided link items">
       <skos-concept v-for="t in concepts" :resource="t.subject" :key="t.subject"></skos-concept>
     </div>
   </div>
   <div class="seven wide column" v-show="current_concept !== undefined">
-      <skos-concept-table :resource="current_concept"></skos-concept-table>
+      <skos-concept-table :resource="current_concept"
+        @removed="conceptRemoved"></skos-concept-table>
   </div>
 </div>
 </template>
@@ -67,6 +75,16 @@ export default {
         scheme: scheme
       });
     },
+    deleteScheme(v) {
+      this.$db.jsonld.cut(v, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          this.getSchemes();
+          this.setActiveScheme('');
+        }
+      });
+    },
     getSchemes() {
       this.getInto('schemes', {
         predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -86,6 +104,12 @@ export default {
           object: 'http://www.w3.org/2004/02/skos/core#Concept'
         });
       }
+    },
+    conceptRemoved() {
+      this.$store.commit('setActiveConcept', {
+        concept: ''
+      });
+      this.getConcepts();
     }
   }
 }

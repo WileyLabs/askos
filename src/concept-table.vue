@@ -1,9 +1,13 @@
 <template>
 <div v-if="compacted['prefLabel']">
+  <button class="ui right floated red basic icon button" @click="delConcept">
+    <i class="delete icon"></i>
+    Delete
+  </button>
   <h2 class="ui header">
     <span v-for="p in compacted['prefLabel']">{{p | @value}}</span>
-    <div class="ui sub header">{{compacted['id']}}</div>
   </h2>
+  <p>{{compacted['id']}}</p>
   <table class="ui definition table">
     <tbody>
     <tr v-for="(val, key) in filtered">
@@ -82,13 +86,23 @@ export default {
         'id': this.compacted.id
       };
       to_delete[key] = this.compacted[key][index];
-      console.log('to delete', to_delete);
       this.$db.jsonld.del(to_delete, (err) => {
         if (err) {
           console.error(err);
         } else {
           // remove it from the UI state object
           this.compacted[key].splice(index, 1);
+        }
+      });
+    },
+    delConcept() {
+      let self = this;
+      // cutting to avoid removing any related graph contents
+      self.$db.jsonld.cut(this.compacted.id, (err) => {
+        if (err) {
+          console.error(err);
+        } else {
+          self.$emit('removed');
         }
       });
     }

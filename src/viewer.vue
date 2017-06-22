@@ -13,6 +13,7 @@
       <skos-concept-scheme
          v-for="triple in schemes"
          v-if="triple.subject"
+         :key="triple.subject"
          :resource="triple.subject">
       </skos-concept-scheme>
     </div>

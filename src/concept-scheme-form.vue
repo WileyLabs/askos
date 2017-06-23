@@ -7,6 +7,12 @@
       Add Scheme
     </button>
     <form class="ui form" v-else>
+      <button class="ui right floated icon button" @click.prevent="ui.showing = false">
+        <i class="close icon"></i>
+      </button>
+      <div class="ui header" style="margin: 0">
+        Add Scheme
+      </div>
       <div class="ui field">
         <label>Scheme URI</label>
         <input type="url" v-model="doc.id" />
@@ -16,10 +22,7 @@
         <input type="text" v-model="doc.prefLabel" />
       </div>
       <div class="ui field">
-        <button class="ui icon button" @click.prevent="ui.showing = false">
-          <i class="close icon"></i>
-        </button>
-        <button class="ui right floated positive button" @click.prevent="save">
+        <button class="ui right aligned positive button" @click.prevent="save">
           Save Scheme
         </button>
       </div>

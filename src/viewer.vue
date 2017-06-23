@@ -21,7 +21,7 @@
   <div class="six wide column">
     <skos-concept-form @added="getConcepts()" :default-scheme="current_scheme"></skos-concept-form>
     <button class="ui right floated red basic icon button"
-      v-if="current_scheme" @click="deleteScheme(current_scheme)">
+      v-if="current_scheme && concepts.length === 0" @click="deleteScheme(current_scheme)">
       <i class="delete icon"></i>
       Delete Scheme
     </button>

@@ -37,7 +37,7 @@
       <skos-concept v-for="t in concepts" :resource="t.subject" :key="t.subject"></skos-concept>
     </div>
   </div>
-  <div class="seven wide column" v-show="current_concept !== undefined">
+  <div class="seven wide column" v-show="current_concept">
       <skos-concept-table :resource="current_concept"
         @removed="conceptRemoved"></skos-concept-table>
   </div>

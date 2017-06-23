@@ -14,16 +14,16 @@
       <div class="ui header" style="margin: 0">
         Add Scheme
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>Scheme URI</label>
         <input type="url" v-model="doc.id" />
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>skos:prefLabel</label>
         <input type="text" v-model="doc.prefLabel" />
       </div>
-      <div class="ui field">
-        <button class="ui right aligned positive button" type="submit">
+      <div class="field" style="text-align: right">
+        <button class="ui positive button" type="submit">
           Save Scheme
         </button>
       </div>

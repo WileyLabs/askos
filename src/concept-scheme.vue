@@ -2,7 +2,7 @@
 <div :resource="compacted['@id']" :typeof="rdfa_typeof" :id="dom_id"
   class="item" :class="{active: isActive}"
   @click="setActiveScheme(compacted['@id'])">
-  <div class="header">
+  <div class="header" v-if="'skos:prefLabel' in compacted">
     {{compacted['skos:prefLabel'] | @value}}
   </div>
   <div class="content">
@@ -42,9 +42,13 @@ export default {
       self.dom_id = btoa(this.resource);
       // TODO: fix global `context` assumptions
       self.$db.jsonld.get(this.resource, context, {compactArrays: false}, function(err, rv) {
-        // everything's tucked in an @graph because of ^^
-        self.compacted = rv['@graph'][0];
-        // TODO: not really sure what all this may effect...
+        if (null === rv) {
+          // we didn't find a Scheme definition, so just output the @id
+          self.$set(self.compacted, '@id', self.resource);
+        } else {
+          // everything's tucked in an @graph because of ^^
+          self.compacted = rv['@graph'][0];
+        }
       });
     }
 

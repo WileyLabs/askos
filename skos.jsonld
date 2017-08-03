@@ -22,7 +22,7 @@
       }
     },
     {
-      "@id": "../../2004/02/skos/core",
+      "@id": "http://www.w3.org/2004/02/skos/core",
       "@type": "owl:Ontology",
       "dct:contributor": [
         "Dave Beckett",
@@ -42,7 +42,7 @@
         "@language": "en"
       },
       "rdfs:seeAlso": {
-        "@id": "./"
+        "@id": "http://www.w3.org/TR/skos-reference/skos.rdf"
       }
     },
     {
@@ -57,7 +57,7 @@
         }
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "Collection",
@@ -76,7 +76,7 @@
       "@id": "skos:Concept",
       "@type": "owl:Class",
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "Concept",
@@ -94,7 +94,7 @@
         "@id": "skos:Concept"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "Concept Scheme",
@@ -117,7 +117,7 @@
       "@id": "skos:OrderedCollection",
       "@type": "owl:Class",
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "Ordered Collection",
@@ -152,7 +152,7 @@
         }
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "alternative label",
@@ -180,7 +180,7 @@
         "@id": "skos:narrowMatch"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has broader match",
@@ -213,7 +213,7 @@
         "@language": "en"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has broader",
@@ -242,7 +242,7 @@
         "@id": "skos:narrowerTransitive"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has broader transitive",
@@ -264,7 +264,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "change note",
@@ -286,7 +286,7 @@
         "owl:SymmetricProperty"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has close match",
@@ -307,7 +307,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "definition",
@@ -328,7 +328,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "editorial note",
@@ -355,7 +355,7 @@
         "@language": "en"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has exact match",
@@ -376,7 +376,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "example",
@@ -403,7 +403,7 @@
         "@id": "skos:ConceptScheme"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has top concept",
@@ -434,7 +434,7 @@
         }
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "hidden label",
@@ -455,7 +455,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "history note",
@@ -476,7 +476,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "is in scheme",
@@ -505,7 +505,7 @@
         "@language": "en"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "is in mapping relation with",
@@ -529,7 +529,7 @@
         "@id": "skos:Collection"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has member",
@@ -558,7 +558,7 @@
         "@id": "skos:OrderedCollection"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has member list",
@@ -582,7 +582,7 @@
         "@id": "skos:broadMatch"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has narrower match",
@@ -615,7 +615,7 @@
         "@language": "en"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has narrower",
@@ -644,7 +644,7 @@
         "@id": "skos:broaderTransitive"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has narrower transitive",
@@ -666,7 +666,7 @@
         "owl:DatatypeProperty"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "notation",
@@ -688,7 +688,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "note",
@@ -724,7 +724,7 @@
         }
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "preferred label",
@@ -750,7 +750,7 @@
         "@language": "en"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has related",
@@ -772,7 +772,7 @@
         "owl:SymmetricProperty"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "has related match",
@@ -798,7 +798,7 @@
         "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "scope note",
@@ -822,7 +822,7 @@
         "@id": "skos:Concept"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "is in semantic relation with",
@@ -853,7 +853,7 @@
         "@id": "skos:Concept"
       },
       "rdfs:isDefinedBy": {
-        "@id": "../../2004/02/skos/core"
+        "@id": "http://www.w3.org/2004/02/skos/core"
       },
       "rdfs:label": {
         "@value": "is top concept in scheme",

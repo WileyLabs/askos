@@ -11,6 +11,7 @@
   <link rel="edit-form" href="https://github.com/WileyLabs/levelgraph-playground/edit/master/index.html" />
   <style>
   [v-cloak] {display: none}
+  label > input[type=file] { display: none}
   .tabular.menu .item {cursor: pointer}
   #app {margin: 1%}
   .ui.hover-hidden {display: none}
@@ -23,17 +24,32 @@
 <body>
   <p></p>
   <div id="app">
-    <a class="ui right floated icon button" href="https://github.com/WileyLabs/askos" target="_blank">
-      <i class="github alternate icon"></i>
-      Fork / Contribute
-    </a>
 
-    <h1 class="ui dividing page header">
-      Askos
-      <div class="ui sub header">
-        A SKOS browser and editor.
+    <div class="ui three column grid">
+      <div class="column">
+        <h1 class="ui header">
+          Askos
+          <div class="ui sub header">
+            A SKOS browser and editor.
+          </div>
+        </h1>
       </div>
-    </h1>
+      <div class="column">
+        <label class="ui labeled icon button" for="import">
+          <i class="upload icon"></i> Import
+          <input type="file" accept=".ttl, .n3, .json, .jsonld" id="import"
+            @change="importSKOS" />
+        </label>
+      </div>
+      <div class="column">
+        <a class="ui right floated icon button" href="https://github.com/WileyLabs/askos" target="_blank">
+          <i class="github alternate icon"></i>
+          Fork / Contribute
+        </a>
+      </div>
+    </div>
+
+    <div class="ui divider"></div>
 
     <skos-viewer ref="skos" language="en"></skos-viewer>
 

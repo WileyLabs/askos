@@ -11,17 +11,17 @@
     <h4 class="ui header"><div class="ui sub header">Concept Schemes</div></h4>
     <div class="ui fluid vertical menu" v-if="schemes.length > 0">
       <skos-concept-scheme
-         v-for="triple in schemes"
-         v-if="triple.subject"
-         :key="triple.subject"
-         :resource="triple.subject">
+         v-for="scheme in schemes"
+         v-if="scheme"
+         :key="scheme"
+         :resource="scheme">
       </skos-concept-scheme>
     </div>
   </div>
   <div class="six wide column">
     <skos-concept-form @added="getConcepts()" :default-scheme="current_scheme"></skos-concept-form>
     <button class="ui right floated red basic icon button"
-      v-if="current_scheme" @click="deleteScheme(current_scheme)">
+      v-if="current_scheme && concepts.length === 0" @click="deleteScheme(current_scheme)">
       <i class="delete icon"></i>
       Delete Scheme
     </button>
@@ -37,7 +37,7 @@
       <skos-concept v-for="t in concepts" :resource="t.subject" :key="t.subject"></skos-concept>
     </div>
   </div>
-  <div class="seven wide column" v-show="current_concept !== undefined">
+  <div class="seven wide column" v-show="current_concept">
       <skos-concept-table :resource="current_concept"
         @removed="conceptRemoved"></skos-concept-table>
   </div>
@@ -86,10 +86,27 @@ export default {
       });
     },
     getSchemes() {
-      this.getInto('schemes', {
-        predicate: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-        object: 'http://www.w3.org/2004/02/skos/core#ConceptScheme'
-      });
+      let self = this;
+      // find all the schemes in use;
+      self.$db.get({predicate:'http://www.w3.org/2004/02/skos/core#inScheme'},
+        (err, triples) => {
+          self.schemes = Array.from(new Set(triples.map((t) => {
+            return t.object;
+          })));
+
+          // add any empty Schemes that still exist in the graph
+          self.$db.get({
+              predicate:'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+              object: 'http://www.w3.org/2004/02/skos/core#ConceptScheme'
+            },
+            (err, triples) => {
+              let schemes = Array.from(new Set(triples.map((t) => {
+                return t.subject;
+              })));
+              // concat and uniquify
+              self.schemes = Array.from(new Set(self.schemes.concat(schemes)));
+            });
+        });
     },
     getConcepts() {
       if (this.current_scheme) {

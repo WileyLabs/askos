@@ -103,6 +103,7 @@ export default {
           console.error(err);
         } else {
           self.$emit('removed');
+          self.$store.commit('setActiveState', {concept: ''});
         }
       });
     }

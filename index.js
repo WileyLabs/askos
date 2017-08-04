@@ -5,7 +5,6 @@ Vue.use(VueX);
 const VueLevelGraph = require('./src/vue-levelgraph.js');
 Vue.use(VueLevelGraph, {name: 'askos'});
 
-const N3 = require('n3');
 const term = require('./src/utils.js').term;
 
 // Use futuristic Fetch() API
@@ -34,69 +33,7 @@ let context = {
 };
 window.context = context;
 
-
-const VueJSONLD = {
-  install(Vue, options) {
-    Vue.prototype['@context'] = options['@context'];
-
-    // TODO: move out of install()
-    function invert(obj) {
-      var new_obj = {};
-      for (var prop in obj) {
-        if(obj.hasOwnProperty(prop)) {
-          new_obj[obj[prop]] = prop;
-        }
-      }
-      return new_obj;
-    };
-
-    // TODO: can @context be changed later in the app? if so (or when), this
-    // needs to handle those changes
-    let context_flipped = (function() {
-      let temp = options['@context'];
-      delete temp['@base']; // temp's a duplicate for us...
-      return invert(temp);
-    })();
-
-
-    let curie = function(v) {
-      let finds = Object.keys(context_flipped).filter((iri) => {
-        return Boolean(v.substr(0, iri.length) === iri);
-      });
-      if (finds[0] in context_flipped) {
-        return context_flipped[finds[0]] + ':' + v.replace(finds[0], '');
-      } else {
-        // curie-ing failed...return passed in value...
-        return v;
-      }
-    };
-    window.curie = curie;
-    Vue.prototype.curie = curie;
-    Vue.filter('curie', curie);
-
-    let uncurie = function(v) {
-      return N3.Util.expandPrefixedName(v, context['@context']);
-    };
-    Vue.prototype.uncurie = uncurie;
-    Vue.filter('uncurie', uncurie);
-
-    // clean up @value objects + (optional) @language selection
-    Vue.filter('@value', (v, lang) => {
-      if (Array.isArray(v) && v.length === 1) {
-        // TODO: ...yeah...there's more stuff to happen here...
-        if (v[0]['@language'] === lang) {
-          return v[0]['@value'];
-        } else {
-          // TODO: should this fall back to an unknown lang?
-          return v[0]['@value'];
-        }
-      } else if (typeof v === 'object') {
-        // this one's a real object...not an array
-        return v['@value'];
-      }
-    });
-  }
-};
+const VueJSONLD = require('./src/vue-json-ld.js');
 Vue.use(VueJSONLD, {'@context': context['@context']});
 
 var default_n3 = `@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -293,6 +230,27 @@ window.app = new Vue({
         // TODO: ugh...context collapse...
         self.$refs.skos.getSchemes();
       });
+    },
+    importSKOS(ev) {
+      let self = this;
+
+      // determine the file extension
+      let filename = ev.target.files[0].name;
+      let ext = filename.substring(filename.lastIndexOf('.')+1, filename.length) || undefined;
+      // pick the right parser/loader
+      let processor = (ext === 'json' || ext === 'jsonld') ? 'jsonld' : 'n3';
+      // do the loading/importing
+      let reader = new FileReader();
+      reader.onload = (load_event) => {
+        let text = load_event.target.result;
+        self.$db[processor].put(text, (err) => {
+          if (err) console.error(err);
+          // TODO: more context collapse...also...hits the DB twice...
+          self.$refs.skos.getSchemes();
+          self.$refs.skos.getConcepts();
+        });
+      };
+      reader.readAsText(ev.target.files[0], 'UTF-8');
     },
     put: function() {
       var self = this;

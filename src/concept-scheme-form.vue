@@ -6,20 +6,24 @@
       <i class="plus icon"></i>
       Add Scheme
     </button>
-    <form class="ui form" v-else>
-      <div class="ui field">
+    <form class="ui form" @submit.prevent="save" v-else>
+      <button class="ui right floated icon button" type="reset"
+        @click.prevent="ui.showing = false">
+        <i class="close icon"></i>
+      </button>
+      <div class="ui header" style="margin: 0">
+        Add Scheme
+      </div>
+      <div class="field">
         <label>Scheme URI</label>
         <input type="url" v-model="doc.id" />
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>skos:prefLabel</label>
         <input type="text" v-model="doc.prefLabel" />
       </div>
-      <div class="ui field">
-        <button class="ui icon button" @click.prevent="ui.showing = false">
-          <i class="close icon"></i>
-        </button>
-        <button class="ui right floated positive button" @click.prevent="save">
+      <div class="field" style="text-align: right">
+        <button class="ui positive button" type="submit">
           Save Scheme
         </button>
       </div>

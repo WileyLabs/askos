@@ -6,30 +6,34 @@
       <i class="plus icon"></i>
       Add Concept
     </button>
-    <form class="ui form" v-else>
-      <div class="ui field">
+    <form class="ui form" @submit.prevent="save" v-else>
+      <button class="ui right floated icon button" type="reset"
+        @click.prevent="ui.showing = false">
+        <i class="close icon"></i>
+      </button>
+      <div class="ui header" style="margin: 0">
+        Add Concept
+      </div>
+      <div class="field">
         <label>ID (an IRI)</label>
         <div class="ui labeled input">
           <input type="url" v-model="doc.id" />
         </div>
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>Prefered Label</label>
         <input type="text" v-model="doc.prefLabel" />
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>Definition</label>
         <input type="text" v-model="doc.definition" />
       </div>
-      <div class="ui field">
+      <div class="field">
         <label>In Scheme(s)</label>
         <vue-semantic-multi-select placeholder="Schemes" :options="schemes" v-model="doc.inScheme"></vue-semantic-multi-select>
       </div>
-      <div class="ui field">
-        <button class="ui icon button" @click.prevent="ui.showing = false">
-          <i class="close icon"></i>
-        </button>
-        <button class="ui right floated positive button" @click.prevent="save">
+      <div class="field" style="text-align: right">
+        <button class="ui right aligned positive button" type="submit">
           Save Concept
         </button>
       </div>
@@ -98,6 +102,7 @@ export default {
       self.$db.jsonld.put(json, (err) => {
         if (err) console.error(err);
         self.$emit('added');
+        self.ui.showing = false;
       });
     }
   }

@@ -231,6 +231,27 @@ window.app = new Vue({
         self.$refs.skos.getSchemes();
       });
     },
+    importSKOS(ev) {
+      let self = this;
+
+      // determine the file extension
+      let filename = ev.target.files[0].name;
+      let ext = filename.substring(filename.lastIndexOf('.')+1, filename.length) || undefined;
+      // pick the right parser/loader
+      let processor = (ext === 'json' || ext === 'jsonld') ? 'jsonld' : 'n3';
+      // do the loading/importing
+      let reader = new FileReader();
+      reader.onload = (load_event) => {
+        let text = load_event.target.result;
+        self.$db[processor].put(text, (err) => {
+          if (err) console.error(err);
+          // TODO: more context collapse...also...hits the DB twice...
+          self.$refs.skos.getSchemes();
+          self.$refs.skos.getConcepts();
+        });
+      };
+      reader.readAsText(ev.target.files[0], 'UTF-8');
+    },
     put: function() {
       var self = this;
       // TODO: refs are handy, but this feels "off"

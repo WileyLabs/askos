@@ -7,7 +7,7 @@
   </div>
   <div class="content">
     {{compacted['@id']}}
-    <span v-for="def in compacted['definition']">{{def}}</span>
+    <span v-for="def in compacted['definition']">{{def | @value}}</span>
   </div>
 </div>
 </template>

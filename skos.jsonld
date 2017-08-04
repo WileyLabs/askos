@@ -8,7 +8,7 @@
   },
   "@graph": [
     {
-      "@id": "_:g69826909897300",
+      "@id": "_:g70065055804700",
       "@type": "owl:Class",
       "owl:unionOf": {
         "@list": [
@@ -30,8 +30,8 @@
         "Participants in W3C's Semantic Web Deployment Working Group."
       ],
       "dct:creator": [
-        "Alistair Miles",
-        "Sean Bechhofer"
+        "Sean Bechhofer",
+        "Alistair Miles"
       ],
       "dct:description": {
         "@value": "An RDF vocabulary for describing the basic structure and content of concept schemes such as thesauri, classification schemes, subject heading lists, taxonomies, 'folksonomies', other types of controlled vocabulary, and also concept schemes embedded in glossaries and terminologies.",
@@ -42,7 +42,7 @@
         "@language": "en"
       },
       "rdfs:seeAlso": {
-        "@id": "http://www.w3.org/TR/skos-reference/skos.rdf"
+        "@id": "http://www.w3.org/TR/skos-reference/"
       }
     },
     {
@@ -50,10 +50,10 @@
       "@type": "owl:Class",
       "owl:disjointWith": [
         {
-          "@id": "skos:ConceptScheme"
+          "@id": "skos:Concept"
         },
         {
-          "@id": "skos:Concept"
+          "@id": "skos:ConceptScheme"
         }
       ],
       "rdfs:isDefinedBy": {
@@ -173,8 +173,8 @@
     {
       "@id": "skos:broadMatch",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:narrowMatch"
@@ -188,10 +188,10 @@
       },
       "rdfs:subPropertyOf": [
         {
-          "@id": "skos:mappingRelation"
+          "@id": "skos:broader"
         },
         {
-          "@id": "skos:broader"
+          "@id": "skos:mappingRelation"
         }
       ],
       "skos:definition": {
@@ -202,8 +202,8 @@
     {
       "@id": "skos:broader",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:narrower"
@@ -234,9 +234,9 @@
     {
       "@id": "skos:broaderTransitive",
       "@type": [
-        "owl:ObjectProperty",
+        "owl:TransitiveProperty",
         "rdf:Property",
-        "owl:TransitiveProperty"
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:narrowerTransitive"
@@ -281,9 +281,9 @@
     {
       "@id": "skos:closeMatch",
       "@type": [
-        "owl:ObjectProperty",
         "rdf:Property",
-        "owl:SymmetricProperty"
+        "owl:SymmetricProperty",
+        "owl:ObjectProperty"
       ],
       "rdfs:isDefinedBy": {
         "@id": "http://www.w3.org/2004/02/skos/core"
@@ -345,10 +345,10 @@
     {
       "@id": "skos:exactMatch",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property",
         "owl:TransitiveProperty",
-        "owl:SymmetricProperty"
+        "rdf:Property",
+        "owl:SymmetricProperty",
+        "owl:ObjectProperty"
       ],
       "rdfs:comment": {
         "@value": "skos:exactMatch is disjoint with each of the properties skos:broadMatch and skos:relatedMatch.",
@@ -393,8 +393,8 @@
     {
       "@id": "skos:hasTopConcept",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:topConceptOf"
@@ -425,11 +425,11 @@
       ],
       "rdfs:comment": [
         {
-          "@value": "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.",
+          "@value": "The range of skos:hiddenLabel is the class of RDF plain literals.",
           "@language": "en"
         },
         {
-          "@value": "The range of skos:hiddenLabel is the class of RDF plain literals.",
+          "@value": "skos:prefLabel, skos:altLabel and skos:hiddenLabel are pairwise disjoint properties.",
           "@language": "en"
         }
       ],
@@ -472,8 +472,8 @@
     {
       "@id": "skos:inScheme",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "rdfs:isDefinedBy": {
         "@id": "http://www.w3.org/2004/02/skos/core"
@@ -497,8 +497,8 @@
     {
       "@id": "skos:mappingRelation",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "rdfs:comment": {
         "@value": "These concept mapping relations mirror semantic relations, and the data model defined below is similar (with the exception of skos:exactMatch) to the data model defined for semantic relations. A distinct vocabulary is provided for concept mapping relations, to provide a convenient way to differentiate links within a concept scheme from links between concept schemes. However, this pattern of usage is not a formal requirement of the SKOS data model, and relies on informal definitions of best practice.",
@@ -522,8 +522,8 @@
     {
       "@id": "skos:member",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "rdfs:domain": {
         "@id": "skos:Collection"
@@ -536,7 +536,7 @@
         "@language": "en"
       },
       "rdfs:range": {
-        "@id": "_:g69826909897300"
+        "@id": "_:g70065055804700"
       },
       "skos:definition": {
         "@value": "Relates a collection to one of its members.",
@@ -546,9 +546,9 @@
     {
       "@id": "skos:memberList",
       "@type": [
-        "owl:ObjectProperty",
+        "owl:FunctionalProperty",
         "rdf:Property",
-        "owl:FunctionalProperty"
+        "owl:ObjectProperty"
       ],
       "rdfs:comment": {
         "@value": "For any resource, every item in the list given as the value of the\n      skos:memberList property is also a value of the skos:member property.",
@@ -575,8 +575,8 @@
     {
       "@id": "skos:narrowMatch",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:broadMatch"
@@ -590,10 +590,10 @@
       },
       "rdfs:subPropertyOf": [
         {
-          "@id": "skos:mappingRelation"
+          "@id": "skos:narrower"
         },
         {
-          "@id": "skos:narrower"
+          "@id": "skos:mappingRelation"
         }
       ],
       "skos:definition": {
@@ -604,8 +604,8 @@
     {
       "@id": "skos:narrower",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:broader"
@@ -636,9 +636,9 @@
     {
       "@id": "skos:narrowerTransitive",
       "@type": [
-        "owl:ObjectProperty",
+        "owl:TransitiveProperty",
         "rdf:Property",
-        "owl:TransitiveProperty"
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:broaderTransitive"
@@ -662,8 +662,8 @@
     {
       "@id": "skos:notation",
       "@type": [
-        "rdf:Property",
-        "owl:DatatypeProperty"
+        "owl:DatatypeProperty",
+        "rdf:Property"
       ],
       "rdfs:isDefinedBy": {
         "@id": "http://www.w3.org/2004/02/skos/core"
@@ -741,9 +741,9 @@
     {
       "@id": "skos:related",
       "@type": [
-        "owl:ObjectProperty",
         "rdf:Property",
-        "owl:SymmetricProperty"
+        "owl:SymmetricProperty",
+        "owl:ObjectProperty"
       ],
       "rdfs:comment": {
         "@value": "skos:related is disjoint with skos:broaderTransitive",
@@ -767,9 +767,9 @@
     {
       "@id": "skos:relatedMatch",
       "@type": [
-        "owl:ObjectProperty",
         "rdf:Property",
-        "owl:SymmetricProperty"
+        "owl:SymmetricProperty",
+        "owl:ObjectProperty"
       ],
       "rdfs:isDefinedBy": {
         "@id": "http://www.w3.org/2004/02/skos/core"
@@ -815,8 +815,8 @@
     {
       "@id": "skos:semanticRelation",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "rdfs:domain": {
         "@id": "skos:Concept"
@@ -843,8 +843,8 @@
     {
       "@id": "skos:topConceptOf",
       "@type": [
-        "owl:ObjectProperty",
-        "rdf:Property"
+        "rdf:Property",
+        "owl:ObjectProperty"
       ],
       "owl:inverseOf": {
         "@id": "skos:hasTopConcept"

@@ -11,7 +11,7 @@ export default {
   methods: {
     selected() {
       this.$store.commit('setActiveScheme', {
-        scheme: resource
+        scheme: this.resource
       });
     }
   }

@@ -10,8 +10,8 @@ export default {
   props: ['resource'],
   methods: {
     selected() {
-      this.$store.commit('setActiveScheme', {
-        scheme: this.resource
+      this.$store.commit('setActiveConcept', {
+        concept: this.resource
       });
     }
   }

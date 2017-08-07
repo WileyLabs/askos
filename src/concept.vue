@@ -11,6 +11,7 @@
     <div class="header" v-for="label in compacted['prefLabel']">
       {{label | @value}}
     </div>
+    <div class="meta">{{compacted['@id']}}</div>
     <div class="description">
       <p v-for="d in compacted['definition']">{{d | @value}}</p>
     </div>

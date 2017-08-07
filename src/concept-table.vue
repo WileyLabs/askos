@@ -1,5 +1,5 @@
 <template>
-<div v-if="compacted['prefLabel']">
+<div>
   <button class="ui right floated red basic icon button" @click="delConcept">
     <i class="delete icon"></i>
     Delete

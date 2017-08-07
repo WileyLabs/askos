@@ -9,18 +9,25 @@
   </h2>
   <p>{{compacted['id']}}</p>
   <table class="ui definition table">
-    <tbody>
+    <tbody v-if="filtered.length > 0">
     <tr v-for="(val, key) in filtered">
       <td>{{key}}</td>
-      <td v-if="key !== 'inScheme' && key !== 'topConceptOf'">
-        <rdf-item @removeIntent="del" v-if="val.length === 1" :label="key" :val="val[0]"></rdf-item>
-        <rdf-item @removeIntent="del" v-else :label="key" :val="val"></rdf-item>
-      </td>
-      <td v-else>
+      <td v-if="key === 'inScheme' || key === 'topConceptOf'">
         <skos-concept-scheme-filter-link v-for="scheme in val"
           :resource="scheme.id"></skos-concept-scheme-filter-link>
       </td>
+      <td v-else-if="key === 'narrower' || key === 'broader'">
+        <skos-concept-filter-link v-for="scheme in val"
+          :resource="scheme.id"></skos-concept-filter-link>
+      </td>
+      <td v-else>
+        <rdf-item @removeIntent="del" v-if="val.length === 1" :label="key" :val="val[0]"></rdf-item>
+        <rdf-item @removeIntent="del" v-else :label="key" :val="val"></rdf-item>
+      </td>
     </tr>
+    </tbody>
+    <tbody v-else>
+      <tr><td>No additional properties.</td></tr>
     </tbody>
   </table>
   <!--textarea>{{compacted}}</textarea-->

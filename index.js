@@ -102,6 +102,7 @@ Vue.component('skos-concept-scheme-filter-link', require('./src/concept-scheme-f
 Vue.component('skos-concept', require('./src/concept.vue'));
 Vue.component('skos-concept-form', require('./src/concept-form.vue'));
 Vue.component('skos-concept-table', require('./src/concept-table.vue'));
+Vue.component('skos-concept-filter-link', require('./src/concept-filter-link.vue'));
 
 function removeEmpties(spo) {
   // TODO: certainly  there's a better way to "clean" this object...later...maybe

@@ -43,20 +43,4 @@ export function install(Vue, options) {
   };
   Vue.prototype.uncurie = uncurie;
   Vue.filter('uncurie', uncurie);
-
-  // clean up @value objects + (optional) @language selection
-  Vue.filter('@value', (v, lang) => {
-    if (Array.isArray(v) && v.length === 1) {
-      // TODO: ...yeah...there's more stuff to happen here...
-      if (v[0]['@language'] === lang) {
-        return v[0]['@value'];
-      } else {
-        // TODO: should this fall back to an unknown lang?
-        return v[0]['@value'];
-      }
-    } else if (typeof v === 'object') {
-      // this one's a real object...not an array
-      return v['@value'];
-    }
-  });
 };

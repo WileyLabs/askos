@@ -36,6 +36,22 @@ window.context = context;
 const VueJSONLD = require('./src/vue-json-ld.js');
 Vue.use(VueJSONLD, {'@context': context['@context']});
 
+// clean up @value objects + (optional) @language selection
+Vue.filter('@value', (v, lang) => {
+  if (Array.isArray(v) && v.length === 1) {
+    // TODO: ...yeah...there's more stuff to happen here...
+    if (v[0]['@language'] === lang) {
+      return v[0]['@value'];
+    } else {
+      // TODO: should this fall back to an unknown lang?
+      return v[0]['@value'];
+    }
+  } else if (typeof v === 'object') {
+    // this one's a real object...not an array
+    return v['@value'];
+  }
+});
+
 var default_n3 = `@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .

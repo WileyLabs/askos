@@ -7,7 +7,7 @@
   <h2 class="ui header">
     <span v-for="p in compacted['prefLabel']">{{p | @value}}</span>
   </h2>
-  <p>{{compacted['id']}}</p>
+  <p>{{compacted['id'] | curie}}</p>
   <table class="ui definition table">
     <tbody v-if="filtered.length > 0">
     <tr v-for="(val, key) in filtered">

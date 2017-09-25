@@ -1,3 +1,4 @@
+const N3 = require('n3');
 const VueX = require('vuex');
 const Vue = require('vue');
 Vue.use(VueX);
@@ -33,8 +34,28 @@ let context = {
 };
 window.context = context;
 
-const VueJSONLD = require('./src/vue-json-ld.js');
-Vue.use(VueJSONLD, {'@context': context['@context']});
+let curie = function(v) {
+  // we may not have a value yet
+  if (undefined === v) return v;
+
+  let found = Object.entries(context['@context'])
+                    .filter((el) => v.startsWith(el[1]));
+  if (found.length > 0) {
+    return found[0][0] + ':' + v.replace(found[0][1], '');
+  } else {
+    // curie-ing failed...return passed in value...
+    return v;
+  }
+};
+
+let uncurie = function(v) {
+  return N3.Util.expandPrefixedName(v, context['@context']);
+};
+
+window.curie = curie;
+window.uncurie = uncurie;
+Vue.filter('curie', curie);
+Vue.mixin({methods: {curie, uncurie}});
 
 // clean up @value objects + (optional) @language selection
 Vue.filter('@value', (v, lang) => {
@@ -122,6 +143,7 @@ window.app = new Vue({
       },
       n3: {}
     },
+    context,
     table: [],
     filter: {
       subject: '',

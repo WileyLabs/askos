@@ -52,40 +52,6 @@ Vue.filter('@value', (v, lang) => {
   }
 });
 
-var default_n3 = `@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix ex: <http://www.example.com/> .
-@prefix ex1: <http://www.example.com/1/> .
-@prefix ex2: <http://www.example.com/2/> .
-
-ex1:referenceAnimalScheme rdf:type skos:ConceptScheme;
-   dct:title "Extensive list of animals"@en. 
-ex1:animal rdf:type skos:Concept;
-   skos:prefLabel "animal"@en;
-   skos:inScheme ex1:referenceAnimalScheme.
-ex1:platypus rdf:type skos:Concept;
-   skos:prefLabel "platypus"@en;
-   skos:inScheme ex1:referenceAnimalScheme.
-
-ex2:eggSellerScheme rdf:type skos:ConceptScheme;
-   dct:title "Obsessed egg-seller's vocabulary"@en. 
-ex2:eggLayingAnimals rdf:type skos:Concept;
-   skos:prefLabel "animals that lay eggs"@en;
-   skos:inScheme ex2:eggSellerScheme.
-ex2:animals rdf:type skos:Concept;
-   skos:prefLabel "animals"@en;
-   skos:inScheme ex2:eggSellerScheme.
-ex2:eggs rdf:type skos:Concept;
-   skos:prefLabel "eggs"@en;
-   skos:inScheme ex2:eggSellerScheme.
-`;
-
-var default_jsonld = `{}`;
-
 const store = new VueX.Store({
   strict: true,
   state: {
@@ -149,10 +115,6 @@ window.app = new Vue({
   el: '#app',
   store,
   data: {
-    input: {
-      jsonld: default_jsonld,
-      n3: default_n3
-    },
     config: {
       jsonld: {
         base: '',
@@ -166,24 +128,11 @@ window.app = new Vue({
       predicate: '',
       object: ''
     },
-    current_tab: 'json-ld',
     limit: 100,
     offset: 0,
     filtered: false,
     output_jsonld: '',
     output_n3: ''
-  },
-  watch: {
-    current_tab: function(v) {
-      var self = this;
-      // DOM changing...wait for it...
-      Vue.nextTick(function() {
-        // TODO: ugh...context leakage...nasty stuff
-        if (self.input_type) {
-          self.$refs[self.input_type].refresh();
-        }
-      });
-    }
   },
   computed: {
     actual_filter: function() {
@@ -201,20 +150,6 @@ window.app = new Vue({
       spo = removeEmpties(spo);
 
       return spo;
-    },
-    input_type: function() {
-      // TODO: this is embarrasingly bad...
-      if (this.current_tab === 'json-ld') {
-        return 'jsonld';
-      } else if (this.current_tab === 'n3') {
-        return 'n3';
-      } else if (this.current_tab === 'output-jsonld') {
-        return 'output-jsonld';
-      } else if (this.current_tab === 'output-n3') {
-        return 'output-n3';
-      } else {
-        return false;
-      }
     },
     actual_table: function() {
       return this.table.slice(this.offset, this.limit+this.offset);
@@ -338,9 +273,6 @@ window.app = new Vue({
         this.filter[filter] = '';
       }
       this.applyFilter();
-    },
-    changeTab: function(tab) {
-      this.current_tab = tab;
     },
     setFilter: function(spo) {
       // TODO: add some error handling and such

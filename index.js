@@ -140,6 +140,7 @@ window.app = new Vue({
     },
     context,
     table: [],
+    active_tab: 'editor',
     filter: {
       subject: '',
       predicate: '',
@@ -150,6 +151,13 @@ window.app = new Vue({
     filtered: false,
     output_jsonld: '',
     output_n3: ''
+  },
+  watch: {
+    active_tab(v) {
+      if (v === 'triples') {
+        this.displayTriples();
+      }
+    }
   },
   computed: {
     actual_filter: function() {
@@ -191,6 +199,9 @@ window.app = new Vue({
     this.displayTriples();
   },*/
   methods: {
+    isActiveTab(tab) {
+      return (tab === this.active_tab);
+    },
     displayTriples: function(spo) {
       if (!(spo)) spo = {};
       var self = this;

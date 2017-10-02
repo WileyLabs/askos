@@ -20,14 +20,9 @@ let context = {
     "xml": "http://www.w3.org/XML/1998/namespace",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "foaf": "http://xmlns.com/foaf/0.1/",
-    "mesh": "https://www.nlm.nih.gov/mesh/#",
     "prov": "http://www.w3.org/ns/prov#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "wbas": "https://ontology.wiley.com/Base#",
-    "wdat": "https://data.wiley.com/",
-    "wpub": "https://vocabulary.wiley.com/PublicationType/",
-    "fabio": "http://purl.org/spar/fabio/",
     "@base": "https://vocabulary.wiley.com/PublicationType/",
     "@language": "en"
   }

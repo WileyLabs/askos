@@ -220,6 +220,39 @@ window.app = new Vue({
       let reader = new FileReader();
       reader.onload = (load_event) => {
         let text = load_event.target.result;
+        // load any existing additions into the local state
+        let additions = {};
+        if ('askos-context' in localStorage) {
+          additions = JSON.parse(localStorage['askos-context']);
+        }
+        // extract prefixes and persist them
+        if (processor === 'jsonld') {
+          // pull them straight out of the @context
+          // TODO: ...this assumes a single, top-level @context...probably
+          // should use jsonld.js to find stuff
+          let temp = JSON.parse(text)['@context'];
+          Object.keys(temp).forEach((key) => {
+            additions[key] = temp[key];
+          });
+          localStorage['askos-context'] = JSON.stringify(additions);
+        } else {
+          let parser = N3.Parser();
+          parser.parse(text, (error, triple, _prefixes) => {
+            if (!triple) {
+              // remove the base/default namespace
+              // TODO: probably check to be sure it's also mapped to something
+              // else...maybe make one up?
+              console.log('_prefixes', _prefixes);
+              delete _prefixes[''];
+              // TODO: this overwrites existing prefixes...
+              Object.keys(_prefixes).forEach((key) => {
+                additions[key] = _prefixes[key];
+              });
+              localStorage['askos-context'] = JSON.stringify(additions);
+            }
+          });
+        }
+        // add additional prefixes
         self.$db[processor].put(text, (err) => {
           if (err) console.error(err);
           // TODO: more context collapse...also...hits the DB twice...

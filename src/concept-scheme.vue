@@ -6,7 +6,7 @@
     {{compacted['prefLabel'] | @value}}
   </div>
   <div class="content">
-    {{compacted['@id']}}
+    {{compacted['@id'] | curie}}
     <span v-for="def in compacted['definition']">{{def | @value}}</span>
   </div>
 </div>

@@ -1,3 +1,4 @@
+const N3 = require('n3');
 const VueX = require('vuex');
 const Vue = require('vue');
 Vue.use(VueX);
@@ -13,62 +14,59 @@ require('isomorphic-fetch');
 
 let context = {
   "@context": {
-    "dct": "http://purl.org/dc/terms/",
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "xml": "http://www.w3.org/XML/1998/namespace",
-    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
     "foaf": "http://xmlns.com/foaf/0.1/",
-    "mesh": "https://www.nlm.nih.gov/mesh/#",
+    "owl": "http://www.w3.org/2002/07/owl#",
     "prov": "http://www.w3.org/ns/prov#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "skos": "http://www.w3.org/2004/02/skos/core#",
-    "wbas": "https://ontology.wiley.com/Base#",
-    "wdat": "https://data.wiley.com/",
-    "wpub": "https://vocabulary.wiley.com/PublicationType/",
-    "fabio": "http://purl.org/spar/fabio/",
+    "xml": "http://www.w3.org/XML/1998/namespace",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
     "@base": "https://vocabulary.wiley.com/PublicationType/",
     "@language": "en"
   }
 };
 window.context = context;
 
-const VueJSONLD = require('./src/vue-json-ld.js');
-Vue.use(VueJSONLD, {'@context': context['@context']});
+let curie = function(v) {
+  // we may not have a value yet
+  if (undefined === v) return v;
 
-var default_n3 = `@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix ex: <http://www.example.com/> .
-@prefix ex1: <http://www.example.com/1/> .
-@prefix ex2: <http://www.example.com/2/> .
+  let found = Object.entries(context['@context'])
+                    .filter((el) => v.startsWith(el[1]));
+  if (found.length > 0) {
+    return found[0][0] + ':' + v.replace(found[0][1], '');
+  } else {
+    // curie-ing failed...return passed in value...
+    return v;
+  }
+};
 
-ex1:referenceAnimalScheme rdf:type skos:ConceptScheme;
-   dct:title "Extensive list of animals"@en. 
-ex1:animal rdf:type skos:Concept;
-   skos:prefLabel "animal"@en;
-   skos:inScheme ex1:referenceAnimalScheme.
-ex1:platypus rdf:type skos:Concept;
-   skos:prefLabel "platypus"@en;
-   skos:inScheme ex1:referenceAnimalScheme.
+let uncurie = function(v) {
+  return N3.Util.expandPrefixedName(v, context['@context']);
+};
 
-ex2:eggSellerScheme rdf:type skos:ConceptScheme;
-   dct:title "Obsessed egg-seller's vocabulary"@en. 
-ex2:eggLayingAnimals rdf:type skos:Concept;
-   skos:prefLabel "animals that lay eggs"@en;
-   skos:inScheme ex2:eggSellerScheme.
-ex2:animals rdf:type skos:Concept;
-   skos:prefLabel "animals"@en;
-   skos:inScheme ex2:eggSellerScheme.
-ex2:eggs rdf:type skos:Concept;
-   skos:prefLabel "eggs"@en;
-   skos:inScheme ex2:eggSellerScheme.
-`;
+window.curie = curie;
+window.uncurie = uncurie;
+Vue.filter('curie', curie);
+Vue.mixin({methods: {curie, uncurie}});
 
-var default_jsonld = `{}`;
+// clean up @value objects + (optional) @language selection
+Vue.filter('@value', (v, lang) => {
+  if (Array.isArray(v) && v.length === 1) {
+    // TODO: ...yeah...there's more stuff to happen here...
+    if (v[0]['@language'] === lang) {
+      return v[0]['@value'];
+    } else {
+      // TODO: should this fall back to an unknown lang?
+      return v[0]['@value'];
+    }
+  } else if (typeof v === 'object') {
+    // this one's a real object...not an array
+    return v['@value'];
+  }
+});
 
 const store = new VueX.Store({
   strict: true,
@@ -133,10 +131,6 @@ window.app = new Vue({
   el: '#app',
   store,
   data: {
-    input: {
-      jsonld: default_jsonld,
-      n3: default_n3
-    },
     config: {
       jsonld: {
         base: '',
@@ -144,13 +138,14 @@ window.app = new Vue({
       },
       n3: {}
     },
+    context,
     table: [],
+    active_tab: 'editor',
     filter: {
       subject: '',
       predicate: '',
       object: ''
     },
-    current_tab: 'json-ld',
     limit: 100,
     offset: 0,
     filtered: false,
@@ -158,15 +153,10 @@ window.app = new Vue({
     output_n3: ''
   },
   watch: {
-    current_tab: function(v) {
-      var self = this;
-      // DOM changing...wait for it...
-      Vue.nextTick(function() {
-        // TODO: ugh...context leakage...nasty stuff
-        if (self.input_type) {
-          self.$refs[self.input_type].refresh();
-        }
-      });
+    active_tab(v) {
+      if (v === 'triples') {
+        this.displayTriples();
+      }
     }
   },
   computed: {
@@ -185,20 +175,6 @@ window.app = new Vue({
       spo = removeEmpties(spo);
 
       return spo;
-    },
-    input_type: function() {
-      // TODO: this is embarrasingly bad...
-      if (this.current_tab === 'json-ld') {
-        return 'jsonld';
-      } else if (this.current_tab === 'n3') {
-        return 'n3';
-      } else if (this.current_tab === 'output-jsonld') {
-        return 'output-jsonld';
-      } else if (this.current_tab === 'output-n3') {
-        return 'output-n3';
-      } else {
-        return false;
-      }
     },
     actual_table: function() {
       return this.table.slice(this.offset, this.limit+this.offset);
@@ -219,10 +195,10 @@ window.app = new Vue({
     }
 
   },
-/*  created: function() {
-    this.displayTriples();
-  },*/
   methods: {
+    isActiveTab(tab) {
+      return (tab === this.active_tab);
+    },
     displayTriples: function(spo) {
       if (!(spo)) spo = {};
       var self = this;
@@ -244,6 +220,39 @@ window.app = new Vue({
       let reader = new FileReader();
       reader.onload = (load_event) => {
         let text = load_event.target.result;
+        // load any existing additions into the local state
+        let additions = {};
+        if ('askos-context' in localStorage) {
+          additions = JSON.parse(localStorage['askos-context']);
+        }
+        // extract prefixes and persist them
+        if (processor === 'jsonld') {
+          // pull them straight out of the @context
+          // TODO: ...this assumes a single, top-level @context...probably
+          // should use jsonld.js to find stuff
+          let temp = JSON.parse(text)['@context'];
+          Object.keys(temp).forEach((key) => {
+            additions[key] = temp[key];
+          });
+          localStorage['askos-context'] = JSON.stringify(additions);
+        } else {
+          let parser = N3.Parser();
+          parser.parse(text, (error, triple, _prefixes) => {
+            if (!triple) {
+              // remove the base/default namespace
+              // TODO: probably check to be sure it's also mapped to something
+              // else...maybe make one up?
+              console.log('_prefixes', _prefixes);
+              delete _prefixes[''];
+              // TODO: this overwrites existing prefixes...
+              Object.keys(_prefixes).forEach((key) => {
+                additions[key] = _prefixes[key];
+              });
+              localStorage['askos-context'] = JSON.stringify(additions);
+            }
+          });
+        }
+        // add additional prefixes
         self.$db[processor].put(text, (err) => {
           if (err) console.error(err);
           // TODO: more context collapse...also...hits the DB twice...
@@ -323,9 +332,6 @@ window.app = new Vue({
       }
       this.applyFilter();
     },
-    changeTab: function(tab) {
-      this.current_tab = tab;
-    },
     setFilter: function(spo) {
       // TODO: add some error handling and such
       this.filter.subject = spo.subject;
@@ -393,5 +399,8 @@ window.app = new Vue({
         });
       }
     }
+  },
+  components: {
+    'context-form': require('./src/context-form.vue')
   }
 });

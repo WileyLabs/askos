@@ -19,6 +19,7 @@
   tr td .ui.input {display: none}
   .compact.table tbody td:last-child {padding: 0}
   .ui.bottom.attached.segment {padding:0}
+  .ui.pointing.menu .item{cursor: pointer}
   </style>
 </head>
 <body>
@@ -49,15 +50,19 @@
       </div>
     </div>
 
-    <div class="ui divider"></div>
-
-    <skos-viewer ref="skos" language="en"></skos-viewer>
-
-
-    <div class="ui top attached tabular menu">
-      <div class="item active" @click="displayTriples()">Triples</div>
+    <div class="ui secondary pointing menu">
+      <div class="item" @click="active_tab = 'editor'" :class="{active: active_tab == 'editor'}">Editor</div>
+      <div class="item" @click="active_tab = 'context'" :class="{active: active_tab == 'context'}">@context</div>
+      <div class="item" @click="active_tab = 'triples'" :class="{active: active_tab == 'triples'}">Triples</div>
     </div>
-    <div class="ui bottom attached segment">
+
+    <div class="ui bottom attached tab" :class="{active: active_tab == 'editor'}">
+      <skos-viewer ref="skos" language="en"></skos-viewer>
+    </div>
+    <div class="ui bottom attached tab" :class="{active: active_tab == 'context'}">
+      <context-form :context.sync="context"></context-form>
+    </div>
+    <div class="ui bottom attached tab" :class="{active: active_tab == 'triples'}">
       <table class="ui table">
         <tr v-for="triple in table">
           <td>{{triple.subject}}</td>

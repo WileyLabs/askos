@@ -195,9 +195,6 @@ window.app = new Vue({
     }
 
   },
-/*  created: function() {
-    this.displayTriples();
-  },*/
   methods: {
     isActiveTab(tab) {
       return (tab === this.active_tab);
@@ -369,5 +366,8 @@ window.app = new Vue({
         });
       }
     }
+  },
+  components: {
+    'context-form': require('./src/context-form.vue')
   }
 });

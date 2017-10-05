@@ -52,11 +52,15 @@
 
     <div class="ui secondary pointing menu">
       <div class="item" @click="active_tab = 'editor'" :class="{active: active_tab == 'editor'}">Editor</div>
+      <div class="item" @click="active_tab = 'context'" :class="{active: active_tab == 'context'}">@context</div>
       <div class="item" @click="active_tab = 'triples'" :class="{active: active_tab == 'triples'}">Triples</div>
     </div>
 
     <div class="ui bottom attached tab" :class="{active: active_tab == 'editor'}">
       <skos-viewer ref="skos" language="en"></skos-viewer>
+    </div>
+    <div class="ui bottom attached tab" :class="{active: active_tab == 'context'}">
+      <context-form :context.sync="context"></context-form>
     </div>
     <div class="ui bottom attached tab" :class="{active: active_tab == 'triples'}">
       <table class="ui table">

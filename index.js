@@ -1,3 +1,8 @@
+/**
+ * @copyright 2017-2020 John Wiley & Sons, Inc.
+ * @license MIT
+ **/
+
 const N3 = require('n3');
 const VueX = require('vuex');
 const Vue = require('vue');

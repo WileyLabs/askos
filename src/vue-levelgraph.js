@@ -1,3 +1,8 @@
+/**
+ * @copyright 2017-2020 John Wiley & Sons, Inc.
+ * @license MIT
+ **/
+
 const levelgraph = require('levelgraph');
 const leveljs = require('level-js');
 const levelup = require('levelup');

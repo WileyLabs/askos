@@ -1,3 +1,8 @@
+/**
+ * @copyright 2017-2020 John Wiley & Sons, Inc.
+ * @license MIT
+ **/
+
 var N3 = require('n3');
 
 var term = function (str) {
